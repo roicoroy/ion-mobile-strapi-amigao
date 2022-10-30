@@ -1,0 +1,14 @@
+# Add files here to ignore them from prettier formatting
+
+/dist
+/coverage
+
+/apps/mobile-appium
+
+/apps/nrwl-gatsby-admin/node_modules
+/apps/nrwl-gatsby-admin/public
+/apps/nrwl-gatsby-admin/.cache
+
+/apps/nrwl-gatsby-storefront/node_modules
+/apps/nrwl-gatsby-storefront/public
+/apps/nrwl-gatsby-storefront/.cache

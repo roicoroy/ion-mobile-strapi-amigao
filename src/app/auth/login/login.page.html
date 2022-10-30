@@ -1,0 +1,82 @@
+<ion-header [translucent]="true" collapse="none">
+  <ion-toolbar>
+    <ion-title color="secondary" class="app-title">
+      {{ 'auth.login.title' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="false">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-card-header>
+        <ion-card-subtitle>{{ 'auth.login.title' | translate }}</ion-card-subtitle>
+        <ion-card-title>{{ 'auth.login.subtitle' | translate }}</ion-card-title>
+      </ion-card-header>
+    </ion-toolbar>
+  </ion-header>
+
+  <form [formGroup]="formGroup">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-item lines="none">
+            <ion-label class="label" for="input-email">{{ 'auth.login.form.input.email.label' | translate }}</ion-label>
+            <ion-input type="email" id="email" formControlName="identifier" placeholder="{{
+              'auth.login.form.input.email.placeholder' | translate
+            }}">
+            </ion-input>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-label class="label" for="input-password">{{ 'auth.login.form.input.password.label' | translate }}
+            </ion-label>
+            <ion-input type="password" id="password" formControlName="password"
+              placeholder="{{ 'auth.login.form.input.password.placeholder' | translate }} "></ion-input>
+          </ion-item>
+
+          <ion-button expand="block" fill="clear" shape="round" (click)="login()" [disabled]="!formGroup.valid">
+            {{ 'auth.login.form.button.login' | translate }}
+          </ion-button>
+
+          <span *ngIf="error">
+            <a class="forgot-password caption-2" routerLink="../request-password">
+              {{ 'auth.login.form.input.password.forgot_message' | translate }}
+            </a>
+          </span>
+
+          <section class="mt-2" aria-label="Register">
+            {{ 'auth.login.form.button.register.label' | translate }}
+            <a class="text-link" routerLink="../register">
+              {{ 'auth.login.form.button.register.link' | translate }}
+            </a>
+          </section>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+
+
+</ion-content>
+<ion-footer>
+  <ion-toolbar>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="resetPassword()" expand="block" fill="outline" shape="round">
+          Reset Password
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button (click)="requestPassword()" expand="block" fill="outline" shape="round">
+          Request Password
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button (click)="back()" expand="block" fill="outline" shape="round">
+          Home
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,8 @@
+{
+  "name": "ion-mobile-strapi-news",
+  "appId": "ion.strapi.news",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

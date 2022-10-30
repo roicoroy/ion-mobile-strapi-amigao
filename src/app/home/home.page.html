@@ -1,0 +1,52 @@
+<ion-header [translucent]="true" collapse="condense">
+  <ion-toolbar color="seconday">
+    <ion-buttons slot="start">
+      <ion-button (click)="closeMenu()">
+        <ion-icon name="menu" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="app-title" color="light">
+      {{ 'Shop Mobile' | translate }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="primary">
+  <ion-header collapse="condense">
+    <ion-toolbar color="secondary">
+      <ion-card-header>
+        <ion-card-subtitle> {{ 'WELCOME' | translate }} </ion-card-subtitle>
+        <ion-card-title class="app-font">
+          {{ 'Shop Mobile' | translate }}
+        </ion-card-title>
+      </ion-card-header>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-row class="top-row">
+      <ion-slides [options]="slideOpts" mode="ios" pager="ios" scrollbar="ios">
+        <ion-slide *ngFor="let item of bannerImages">
+          <ion-img [src]="item.attributes.formats.small?.url"></ion-img>
+        </ion-slide>
+      </ion-slides>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="secondary">
+    <ion-row>
+      <ion-col>
+        <ion-button color="primary" expand="block" fill="solid" shape="round" routerLink="/auth/login"
+          routerDirection="forward">
+          {{ 'Auth' | uppercase | translate }}!
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button color="primary" expand="block" fill="solid" shape="round" routerLink="/auth/profile/strapi"
+          routerDirection="forward">
+          {{ 'Strapi Profile' | uppercase | translate }}!
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

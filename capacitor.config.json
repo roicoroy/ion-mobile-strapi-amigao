@@ -1,0 +1,6 @@
+{
+	"appId": "ion.strapi.news",
+	"appName": "ion-mobile-strapi-news",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

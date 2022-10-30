@@ -1,0 +1,5 @@
+platforms:
+  ios:
+    version: 0.0.1
+    buildNumber: 1
+    incrementBuild: true

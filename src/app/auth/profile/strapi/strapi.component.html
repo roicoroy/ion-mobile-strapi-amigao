@@ -1,0 +1,186 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>
+            {{ 'Strapi Profile' | translate }}
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+    <ion-row>
+        <ion-col size-sm="6" offset-sm="3">
+            <div *ngIf="avatar">
+                <app-image-picker [userAvatar]="avatar" (imagePick)="onImagePicked($event)"></app-image-picker>
+            </div>
+        </ion-col>
+    </ion-row>
+
+
+    <ion-list>
+        <ion-item>
+          <ion-label>FCM Message</ion-label>
+          <ion-toggle [checked]="hasToken" (ionChange)="onToggleChange($event)" slot="end"></ion-toggle>
+        </ion-item>
+      </ion-list>
+
+    <ion-col>
+        <form [formGroup]="strapiProfileForm" ngxsForm="authState.strapiProfileForm">
+            <ion-item>
+                <ion-label position="floating" color="primary">Username</ion-label>
+                <ion-input type="text" formControlName="username"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.username">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('username')?.hasError(validation.type) && (strapiProfileForm.get('username')?.dirty || strapiProfileForm.get('username')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+            <ion-item>
+                <ion-label position="floating" color="primary">Email</ion-label>
+                <ion-input type="text" formControlName="email"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.email">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('email')?.hasError(validation.type) && (strapiProfileForm.get('email')?.dirty || strapiProfileForm.get('email')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+
+            <ion-item>
+                <ion-label position="floating" color="primary">
+                    Your Country
+                </ion-label>
+                <ion-input type="text" formControlName="country"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.first_name">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('country')?.hasError(validation.type) && (strapiProfileForm.get('country')?.dirty || strapiProfileForm.get('country')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+
+            <ion-item>
+                <ion-label position="floating" color="primary">First Name</ion-label>
+                <ion-input type="text" formControlName="first_name"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.first_name">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('first_name')?.hasError(validation.type) && (strapiProfileForm.get('first_name')?.dirty || strapiProfileForm.get('first_name')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+
+            <ion-item>
+                <ion-label position="floating" color="primary">Last name</ion-label>
+                <ion-input type="text" formControlName="last_name"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.last_name">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('last_name')?.hasError(validation.type) && (strapiProfileForm.get('last_name')?.dirty || strapiProfileForm.get('last_name')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+
+            <ion-item>
+                <ion-label position="floating" color="primary">Address line 1</ion-label>
+                <ion-input type="text" formControlName="address_1"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.address_1">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('address_1')?.hasError(validation.type) && (strapiProfileForm.get('address_1')?.dirty || strapiProfileForm.get('address_1')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+
+            <ion-item>
+                <ion-label position="floating" color="primary">Address line 2</ion-label>
+                <ion-input type="text" formControlName="address_2"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.address_2">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('address_2')?.hasError(validation.type) && (strapiProfileForm.get('address_2')?.dirty || strapiProfileForm.get('address_2')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+
+            <ion-item>
+                <ion-label color="primary">City</ion-label>
+                <ion-input type="text" formControlName="city"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.city">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('city')?.hasError(validation.type) && (strapiProfileForm.get('city')?.dirty || strapiProfileForm.get('city')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+
+            <ion-item>
+                <ion-label color="primary">Post Code</ion-label>
+                <ion-input type="text" formControlName="postal_code"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.postal_code">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('postal_code')?.hasError(validation.type) && (strapiProfileForm.get('postal_code')?.dirty || strapiProfileForm.get('postal_code')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+
+            <ion-item>
+                <ion-label position="floating" color="primary">Phone</ion-label>
+                <ion-input type="text" formControlName="phone"></ion-input>
+            </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.phone">
+                    <div class="error-message"
+                        *ngIf="strapiProfileForm.get('phone')?.hasError(validation.type) && (strapiProfileForm.get('phone')?.dirty || strapiProfileForm.get('phone')?.touched)">
+                        <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
+        </form>
+        <!-- [disabled]="isMedusaProfileReady && strapiProfileForm.valid ? false : true" -->
+        <ion-button
+            color="primary" class="submit-btn" expand="block" (click)="updateStrapiUser()">
+            Update Profile
+        </ion-button>
+    </ion-col>
+</ion-content>
+<ion-footer>
+    <ion-toolbar>
+        <ion-row>
+            <ion-col>
+                <ion-button color="primary" expand="block" fill="outline" shape="round" routerLink="/home"
+                    routerDirection="back">
+                    <ion-icon name="home"></ion-icon>
+                </ion-button>
+            </ion-col>
+            <ion-col>
+                <!-- [disabled]="isMedusaProfileReady && strapiProfileForm.valid ? false : true" -->
+                <!-- [color]="isMedusaProfileReady && strapiProfileForm.valid ? 'primary' : 'danger'"  -->
+                <ion-button routerLink="/auth/profile/settings" routerDirection="forward"
+                    expand="block"
+                    [fill]="'outline'" shape="round">
+                    Settings
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+</ion-footer>
