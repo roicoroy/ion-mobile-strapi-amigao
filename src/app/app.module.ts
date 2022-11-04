@@ -31,6 +31,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
 import { ErrorsModule } from './shared/errors/errors.module';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localeDe, 'pt');
@@ -79,6 +81,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     // ErrorsModule
   ],
   providers: [
+    StatusBar,
+    SplashScreen,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: StrapiAuthInterceptor,

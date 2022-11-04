@@ -17,6 +17,13 @@ import {
   PushNotificationActionPerformed,
   PushNotificationToken,
 } from '@capacitor/push-notifications';
+
+// import { SplashScreen } from '@capacitor/splash-screen';
+import { Platform } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -44,7 +51,10 @@ export class AppComponent {
     private router: Router,
     private facade: AppFacade,
     private alertCtrl: AlertController,
-    private fcmService: FcmService
+    private fcmService: FcmService,
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private statusBar: StatusBar
   ) {
 
     // this.fcmService.initPush();
@@ -60,9 +70,34 @@ export class AppComponent {
       // console.log('user', this.user, this.avatar);
     });
 
-    this.user = this.store.selectSnapshot<AuthStateModel>((state) => state.authState.user);
+    // this.user = this.store.selectSnapshot<AuthStateModel>((state) => state.authState.user);
     // console.log('user', this.user);
+
+    this.initApp();
   }
+
+  async initApp() {
+    this.platform.ready().then(() => {
+      this.statusBar.backgroundColorByName('green');
+      this.splashScreen.hide();
+    });
+    // await SplashScreen.hide();
+
+    // // Show the splash for an indefinite amount of time:
+    // await SplashScreen.show({
+    //   autoHide: false,
+    // });
+
+    // // Show the splash for two seconds and then automatically hide it:
+    // await SplashScreen.show({
+    //   showDuration: 2000,
+    //   autoHide: true,
+    //   // backgroundColor: "#FF5722"
+    // });
+    // await SplashScreen. 
+  }
+
+
   checkout() {
     this.menu.toggle('end').then(() => {
     });
