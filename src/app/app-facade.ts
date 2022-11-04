@@ -2,14 +2,15 @@ import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map} from 'rxjs/operators';
-import { AuthActions } from '../store/auth.actions';
+import { AuthActions } from './store/auth.actions';
+import { AuthState } from './store/auth.state';
 
 @Injectable({
     providedIn: 'root'
 })
-export class HomePageFacade {
+export class AppFacade {
 
-    @Select(AuthActions.GetUser) getUser$: Observable<any>;
+    @Select(AuthState.getUserState) userState$: Observable<any>;
 
     readonly viewState$: Observable<any>;
 
@@ -18,13 +19,13 @@ export class HomePageFacade {
     ) {
         this.viewState$ = combineLatest(
             [
-                this.getUser$ 
+                this.userState$ 
             ]
         ).pipe(
             map(([
-                getUser
+                userState
             ]) => ({
-                getUser
+                userState
             }))
         );
     }

@@ -1,19 +1,19 @@
-<ion-header [translucent]="true" collapse="condense">
-  <ion-toolbar color="seconday">
+<ion-header [translucent]="false" collapse="none">
+  <ion-toolbar>
     <ion-buttons slot="start">
       <ion-button (click)="closeMenu()">
-        <ion-icon name="menu" color="light"></ion-icon>
+        <ion-icon name="menu"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title class="app-title" color="light">
+    <ion-title class="app-title">
       {{ 'Shop Mobile' | translate }}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" color="primary">
-  <ion-header collapse="condense">
-    <ion-toolbar color="secondary">
+<ion-content [fullscreen]="false">
+  <ion-header collapse="none">
+    <ion-toolbar>
       <ion-card-header>
         <ion-card-subtitle> {{ 'WELCOME' | translate }} </ion-card-subtitle>
         <ion-card-title class="app-font">
@@ -33,17 +33,15 @@
   </ion-grid>
 </ion-content>
 <ion-footer>
-  <ion-toolbar color="secondary">
+  <ion-toolbar>
     <ion-row>
-      <ion-col>
-        <ion-button color="primary" expand="block" fill="solid" shape="round" routerLink="/auth/login"
-          routerDirection="forward">
-          {{ 'Auth' | uppercase | translate }}!
+      <!-- <ion-col>
+        <ion-button color="primary" expand="block" fill="solid" shape="round" (click)="authPage()">
+          {{ 'Login' | uppercase | translate }}!
         </ion-button>
-      </ion-col>
+      </ion-col> -->
       <ion-col>
-        <ion-button color="primary" expand="block" fill="solid" shape="round" routerLink="/auth/profile/strapi"
-          routerDirection="forward">
+        <ion-button color="primary" expand="block" fill="solid" shape="round" (click)="profilePage()">
           {{ 'Strapi Profile' | uppercase | translate }}!
         </ion-button>
       </ion-col>

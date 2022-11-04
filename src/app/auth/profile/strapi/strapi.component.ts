@@ -3,11 +3,12 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
-import { IonStorageService } from 'src/app/shared/services/ionstorage.service';
+import { Observable, pipe, Subject, takeUntil } from 'rxjs';
+import { NavigationService } from 'src/app/shared/services/navigation.service';
 import { FcmService } from 'src/app/shared/services/strapi-fcm.serivce';
 import { StrapiService } from 'src/app/shared/services/strapi.service';
-import { IUser } from 'src/app/shared/types/models/User';
+import { UtilityService } from 'src/app/shared/services/utility.service';
+import { AuthStateModel } from 'src/app/store/auth.state';
 import { AuthActions } from '../../../store/auth.actions';
 import { ProfileFacade } from '../profile.facade';
 import { UploadService } from './upload.service';
@@ -18,8 +19,10 @@ import { UploadService } from './upload.service';
   styleUrls: ['./strapi.component.scss'],
 })
 export class StrapiComponent implements OnInit, AfterViewInit {
-  avatar;
-  user;
+  avatar: string;
+
+  pushAccepted = false;
+
   strapiUserState$: Observable<any>;
 
   strapiProfileForm: FormGroup;
@@ -63,7 +66,9 @@ export class StrapiComponent implements OnInit, AfterViewInit {
     ],
   };
 
-  strapiUser: IUser;
+  strapiUser;
+
+  userId: string;
 
   regionsList: any[];
 
@@ -72,8 +77,6 @@ export class StrapiComponent implements OnInit, AfterViewInit {
   countriesList = [];
 
   selectedCountry;
-
-  isMedusaProfileReady = false;
 
   fcmToken: string;
 
@@ -85,9 +88,15 @@ export class StrapiComponent implements OnInit, AfterViewInit {
   get countryControl() {
     return this.strapiProfileForm.get('country') as FormControl;
   }
+  get acceptedFcmControl() {
+    return this.strapiProfileForm.get('accepted_fcm') as FormControl;
+  }
   get strapiFormGroup() {
     return this.strapiProfileForm as FormGroup;
   }
+
+  private readonly ngUnsubscribe = new Subject();
+
   constructor(
     private formBuilder: FormBuilder,
     private facade: ProfileFacade,
@@ -95,22 +104,10 @@ export class StrapiComponent implements OnInit, AfterViewInit {
     private strapi: StrapiService,
     private toastCtrl: ToastController,
     private store: Store,
-    private fcm: FcmService
+    private fcm: FcmService,
+    private utility: UtilityService,
+    private navigation: NavigationService,
   ) {
-
-    this.countries = [
-      {
-        iso_2: 'US',
-        displayName: 'United States',
-      },
-      {
-        iso_2: 'IT',
-        displayName: 'Italy',
-      }
-    ];
-
-
-    this.strapiUserState$ = this.facade.viewState$;
 
     this.strapiProfileForm = this.formBuilder.group({
       username: new FormControl({ value: '', disabled: false }, Validators.compose([
@@ -127,64 +124,84 @@ export class StrapiComponent implements OnInit, AfterViewInit {
       address_2: new FormControl('', Validators.required),
       city: new FormControl('', Validators.required),
       postal_code: new FormControl('', Validators.required),
+      accepted_fcm: new FormControl(null),
       phone: new FormControl('', Validators.compose([
         Validators.required,
       ])),
     });
+
   }
   ngOnInit(): void {
-    this.regionsList = [];
-    this.countries = [];
+    // this.fcm.initPush();
 
-    this.strapiUserState$.subscribe((user: any) => {
-      // console.log(user.userState);
-      this.strapiUser = user.userState;
-    });
-    if (this.strapiUser?.id) {
-      this.strapi.loadUser(this.strapiUser?.id).subscribe((res: any) => {
-        this.avatar = res?.avatar?.url != null ? res.avatar?.url : 'assets/shapes.svg';
-        this.strapiUser = res;
-        if (this.strapiUser?.country) {
-          this.strapiProfileForm.get('country').setValue(this.strapiUser?.country);
-        }
-        if (this.strapiUser?.username && this.strapiUser?.username) {
-          this.strapiProfileForm.get('username').setValue(this.strapiUser?.username);
-          this.strapiProfileForm.get('email').setValue(this.strapiUser?.email);
-        }
-        if (this.strapiUser?.region_code) {
-          this.regionCodeControl.setValue(this.strapiUser?.region_code);
-        }
-      });
-    }
+    // this.userId = this.store.selectSnapshot<string>((state) => state.authState.userId);
+    // // console.log('this.userId', this.userId);
+
+    // this.store.dispatch(new AuthActions.LoadUser(this.userId));
+    // .subscribe((state) => {
+    //   // this.strapiUser = state.authState.user;
+    // });
+    // console.log('this.strapiUser', this.strapiUser);
+
+    this.strapiUser = this.store.selectSnapshot<AuthStateModel>((state) => state.authState.user);
+
+    this.regionsList = [];
+    this.countries = [
+      {
+        name: 'United Kingdom',
+      },
+      {
+        name: 'Ireland',
+      },
+      {
+        name: 'France',
+      }
+    ];
   }
   ngAfterViewInit() {
-    this.isMedusaProfileReady = this.strapiProfileForm.valid ? true : false;
-  }
-  onToggleChange($event) {
-    // console.log($event.detail.checked);
-    // console.log($event.detail.value);
-    this.fcm.checkDevice();
-  }
-  onRegionCodeChange($event: any) {
-    this.countries = [];
-    // console.log($event.detail.value);
-    if ($event.detail.value) {
-      // console.log($event.detail.value);
+
+    console.log('this.strapiUser', this.strapiUser);
+    if (this.strapiUser) {
+      // console.log('this.strapiUser', this.strapiUser);
+      // console.log('this.avatar', this.avatar);
+
+      // console.log('tthis.strapiUser?.avatar?.url', this.strapiUser?.avatar?.url);
+      this.avatar = this.strapiUser?.avatar?.url != null ? this.strapiUser.avatar?.url : 'assets/shapes.svg';
+      console.log('this.avatar', this.avatar);
+      if (this.strapiUser.accepted_fcm) {
+        this.pushAccepted = this.strapiUser.accepted_fcm;
+        this.acceptedFcmControl.setValue(this.pushAccepted);
+      }
+      if (this.strapiUser?.country) {
+        this.strapiProfileForm.get('country').setValue(this.strapiUser?.country);
+      }
+      if (this.strapiUser?.username && this.strapiUser?.email) {
+        this.strapiProfileForm.get('username').setValue('asd');
+        this.strapiProfileForm.get('email').setValue(this.strapiUser?.email);
+      }
+
+
     }
   }
-  updateStrapiUser() {
-    this.strapi.loadUser(this.strapiUser?.id).subscribe((res: any) => {
-      this.strapiUser = res;
-      // console.log(this.strapiUser);
-      this.store.dispatch(new AuthActions.UpdateStrapiUser(this.strapiUser?.id, this.strapiProfileForm.value))
-        .subscribe((updatedState: any) => {
-          // console.log(updatedState.authState);
-          // console.log(this.strapiProfileForm.valid);
-          this.isMedusaProfileReady = updatedState.authState.strapiProfileForm.model != null && this.strapiProfileForm.valid ? true : false;
-          // console.log(this.isMedusaProfileReady);
-        });
-    });
+
+  onToggleChange($event) {
+    this.pushAccepted = $event.detail.checked;
+    this.updateStrapiUser()
   }
+
+  updateStrapiUser() {
+    // this.utility.presentLoading('Updating profile...');
+    this.store.dispatch(new AuthActions.UpdateStrapiUser(this.strapiUser?.id, this.strapiProfileForm.value))
+      .pipe(
+        takeUntil(this.ngUnsubscribe),
+      )
+      .subscribe((state) => {
+        // this.utility.dismissLoading();
+        this.utility.showToast('Profile updated successfully', 'middle', 750);
+      });
+    // console.log(this.strapiProfileForm.value);
+  }
+
   async onImagePicked(file) {
     // this.upload.onImagePicked(file, this.strapiUser);
     const response = await fetch(file);
@@ -193,6 +210,7 @@ export class StrapiComponent implements OnInit, AfterViewInit {
     formData.append('files', blob, file.name);
     this.uploadData(formData);
   }
+
   async uploadData(formData) {
     this.strapi.uploadData(formData).subscribe((response: any) => {
       if (response) {
@@ -200,17 +218,36 @@ export class StrapiComponent implements OnInit, AfterViewInit {
         // console.log(response, fileId);
         this.strapi.setProfileImage(this.strapiUser?.id, fileId)
           .subscribe((user: any) => {
-            console.log(user);
-            this.store.dispatch(new AuthActions.SetUploadedUser(user));
+            // console.log(user);
+            this.store.dispatch(new AuthActions.SetUploadedUser(user))
+              .pipe(
+                takeUntil(this.ngUnsubscribe),
+              ).subscribe((state) => {
+                console.log(state);
+              });
+            this.utility.showToast('Profile updated successfully', 'middle', 750);
           });
       }
     });
   }
+
   async presentToast(text) {
     const toast = await this.toastCtrl.create({
       message: text,
       duration: 3000,
     });
     toast.present();
+  }
+
+  homePage() {
+    this.navigation.navigateForward('/home', 'back');
+  }
+
+  settingsPage() {
+    this.navigation.navigateFlip('/auth/profile/settings');
+  }
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next(null);
+    this.ngUnsubscribe.complete();
   }
 }

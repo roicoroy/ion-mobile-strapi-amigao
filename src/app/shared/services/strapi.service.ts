@@ -27,7 +27,7 @@ export class StrapiService {
 
     constructor(
         private httpClient: HttpClient,
-        private iosStorage: IonStorageService,
+        // private iosStorage: IonStorageService,
         public alertCtrl: AlertController,
     ) { }
 
@@ -72,20 +72,20 @@ export class StrapiService {
         return this.httpClient.post(environment.API_BASE_PATH + '/auth/local/register', data)
     }
 
-    setTokenResponse(res): void {
-        if (res) {
-            this.iosStorage.storageSet('token', res.jwt);
-            // this.iosStorage.storageSet('user', res.user);
-        }
-    }
+    // setTokenResponse(res): void {
+    //     if (res) {
+    //         this.iosStorage.storageSet('token', res.jwt);
+    //         // this.iosStorage.storageSet('user', res.user);
+    //     }
+    // }
 
     public async registerStrapi(req: IReqAuthRegister): Promise<void> {
         const res: IResAuthRegister | HttpErrorResponse = await this.postRegister(
             req
         );
-        if (res) {
-            this.setTokenResponse(res as IResAuthRegister);
-        }
+        // if (res) {
+        //     this.setTokenResponse(res as IResAuthRegister);
+        // }
     }
 
     private async postRegister(
@@ -153,16 +153,16 @@ export class StrapiService {
             // });
         }
     }
-    public isLoggedIn() {
-        this.iosStorage.getKeyAsObservable('user').subscribe((user) => {
-            if (user) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        });
-    }
+    // public isLoggedIn() {
+    //     this.iosStorage.getKeyAsObservable('user').subscribe((user) => {
+    //         if (user) {
+    //             return true;
+    //         }
+    //         else {
+    //             return false;
+    //         }
+    //     });
+    // }
     public async updateProfile(updateReq: IReqUserUpdate): Promise<void> {
         const res: IUser | HttpErrorResponse = await this.updateUser(updateReq);
         if (res) {
@@ -180,11 +180,12 @@ export class StrapiService {
             await this.postResetPassword(passwordResetReq);
     }
     public loadUser(userId) {
+        // console.log('loadUser', userId);
         return this.httpClient.get(environment.BASE_PATH + '/api/users/' + userId + '?populate=*', { headers: this.headers })
     }
     private async updateUser(updateReq: any): Promise<IUser | HttpErrorResponse> {
         try {
-            console.log(updateReq);
+            // console.log(updateReq);
             const data = {
                 data: {
                     oldPassword: updateReq.oldPassword,
@@ -244,9 +245,9 @@ export class StrapiService {
                 )
             )) as IResAuthLogin | void;
 
-            if (res) {
-                this.setTokenResponse(res);
-            }
+            // if (res) {
+            //     this.setTokenResponse(res);
+            // }
         } catch (error) {
             console.error(error);
             return;

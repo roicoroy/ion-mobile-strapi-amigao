@@ -15,6 +15,7 @@ import { filter, Observable } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 import { AuthState } from '../store/auth.state';
 import { IonStorageService } from './services/ionstorage.service';
+import { UtilityService } from './services/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +25,12 @@ export class AppGuard implements CanActivate, CanActivateChild {
   urlPath: any;
 
   isLoggedIn$: Observable<boolean[]>;
+  isLoggedIn: boolean;
 
   constructor(
     private router: Router,
     private store: Store,
-    private modalCtrl: ModalController
+    private utility: UtilityService
   ) { }
 
   canActivate(
@@ -59,27 +61,24 @@ export class AppGuard implements CanActivate, CanActivateChild {
       this.urlPath = e.route?.path;
     });
 
-    const token = this.store.selectSnapshot<boolean>((state) => state.authState.isLoggedIn);
-    console.log('token', token);
+    this.isLoggedIn = this.store.selectSnapshot<boolean>((state) => state.authState.isLoggedIn);
+    console.log('isLoggedIn', this.isLoggedIn);
+    // console.log('this.urlPath', this.urlPath);
     // const authState = this.authService.isAuthenticated;
     // const authState = this.authService.isAuthenticated;
-    this.isLoggedIn$ = this.store.select(state => state.autState.isLoggedIn);
-    // console.log(this.isLoggedIn$);
-    this.isLoggedIn$.subscribe((isLoggedIn) => {
-      console.log('isLoggedIn', isLoggedIn);
-    });
+    // this.isLoggedIn$ = this.store.select(state => state.autState.isLoggedIn);
+    // // console.log(this.isLoggedIn$);
+    // this.isLoggedIn$.subscribe((isLoggedIn) => {
+    //   console.log('isLoggedIn', isLoggedIn);
+    // });
 
-    // if (!authState && !this.urlPath) {
-    //   // console.log('this.urlPath', this.urlPath);
-    //   this.router.navigateByUrl('/home');
-    //   return false;
-    // }
-    // if (!authState && this.urlPath === 'product-list') {
-    //   // console.log('this.urlPath', this.urlPath);
-    //   this.router.navigateByUrl('/login');
-    //   return false;
-    // }
-    // this.router.navigateByUrl('/shop/tabs/product-list');
+    if (!this.isLoggedIn) {
+      // console.log('isLoggedIn', this.isLoggedIn);
+      this.utility.presentAlert('You need to Login first, please.').then((res)=>{
+        // console.log(res);
+      });
+      return false;
+    }
     return true;
   }
 

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-/* eslint-disable prefer-arrow/prefer-arrow-functions */
-/* eslint-disable @typescript-eslint/naming-convention */
-import { Injectable, Inject, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable, Inject, Renderer2, RendererFactory2, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import * as Color from 'color';
 import { Storage } from '@ionic/storage';
+import { StrapiService } from './strapi.service';
+import { Subject, takeUntil } from 'rxjs';
 
 const defaults = {
     primary: '#3880ff',
@@ -152,19 +151,31 @@ function contrast(color, ratio = 0.8) {
 @Injectable({
     providedIn: 'root'
 })
-export class SettingsService {
+export class ThemeService implements OnDestroy {
+
+    private readonly ngUnsubscribe = new Subject();
 
     renderer: Renderer2;
 
     constructor(
         private storage: Storage,
         private renderFactory: RendererFactory2,
-        @Inject(DOCUMENT) private document: Document
+        @Inject(DOCUMENT) private document: Document,
+        private strapi: StrapiService,
     ) {
-        storage.get('theme').then(cssText => {
-            this.setGlobalCSS(cssText);
-        });
+        // storage.get('theme').then(cssText => {
+        //     this.setGlobalCSS(cssText);
+        // });
         this.renderer = this.renderFactory.createRenderer(null, null);
+    }
+    initTheme() {
+        this.strapi.getAppTheme()
+            .pipe(
+                takeUntil(this.ngUnsubscribe),
+            ).subscribe((theme: any) => {
+                // console.log('theme', theme.data.attributes);
+                this.setTheme(theme.data.attributes);
+            });
     }
 
     setTheme(theme) {
@@ -211,6 +222,11 @@ export class SettingsService {
     }
     enableLight() {
         this.renderer.removeClass(this.document.body, 'dark -theme');
+    }
+
+    ngOnDestroy(): void {
+        this.ngUnsubscribe.next(null);
+        this.ngUnsubscribe.complete();
     }
 }
 

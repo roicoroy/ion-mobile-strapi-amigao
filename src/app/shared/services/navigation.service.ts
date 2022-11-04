@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { NavigationExtras } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { slideAnimation } from '../animations/nav-animation';
+import { fadeOutAnimation, flipAnimation, slideAnimation } from '../animations/nav-animation';
 export interface IInternalNavigationOptions {
     /** The soft URL to navigate to. */
     url: string;
@@ -20,7 +20,8 @@ export interface IInternalNavigationOptions {
 })
 export class NavigationService {
     constructor(
-        private navCtrl: NavController
+        private navCtrl: NavController,
+        private router: Router
     ) { }
     async navigateForward(url: string, direction: any = 'forward') {
         await this.navCtrl.navigateForward(url, {
@@ -42,5 +43,14 @@ export class NavigationService {
             animated: true,
             animationDirection: direction
         });
+    }
+    async navigateFlip(url: string) {
+        await this.navCtrl.navigateForward(url, {
+            animation: flipAnimation,
+            animated: true,
+        });
+    }
+    async navControllerDefault(url: string, direction: any = 'forward') {
+        await this.router.navigateByUrl(url, { });
     }
 }

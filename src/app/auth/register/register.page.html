@@ -1,82 +1,80 @@
-<ion-header>
+<ion-header [translucent]="false" collapse="none">
   <ion-toolbar>
-    <ion-title>register</ion-title>
+    <ion-title class="app-title">
+      {{ 'Regsiter' | translate | uppercase }}
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <h1 id="title" class="title">{{ 'auth.register.title' | translate }}</h1>
+<ion-content [fullscreen]="false" class="ion-padding">
+  <ion-header collapse="none">
+    <ion-toolbar>
+      <ion-card-header>
+        <ion-card-subtitle>{{ 'auth.register.title' | translate }}</ion-card-subtitle>
+        <ion-card-title>{{ 'auth.login.subtitle' | translate }}</ion-card-title>
+      </ion-card-header>
+    </ion-toolbar>
+  </ion-header>
 
-  <p>{{ 'auth.login.subtitle' | translate }}</p>
-  
   <form [formGroup]="formGroup">
-  
-  
     <!-- first_name -->
-    <div class="form-group">
-      <label class="label" for="input-email">{{ 'First Name' | translate }}</label>
-      <input type="first_name" class="form-control" id="first_name" formControlName="first_name"
-        placeholder="{{ 'First Name Placeholder' | translate }}" />
-    </div>
-
-        <!-- last_name -->
-        <div class="form-group">
-          <label class="label" for="input-email">{{ 'Last Name' | translate }}</label>
-          <input type="last_name" class="form-control" id="last_name" formControlName="last_name"
-            placeholder="{{ 'Last Name Placeholder' | translate }}" />
-        </div>
-
+    <ion-item class="form-group">
+      <ion-label class="label" for="input-email">{{ 'First Name' | translate }}</ion-label>
+      <ion-input type="first_name" class="form-control" id="first_name" formControlName="first_name"
+        placeholder="{{ 'First Name Placeholder' | translate }}"></ion-input>
+    </ion-item>
+    <!-- last_name -->
+    <ion-item class="form-group">
+      <ion-label class="label" for="input-email">{{ 'Last Name' | translate }}</ion-label>
+      <ion-input type="last_name" class="form-control" id="last_name" formControlName="last_name"
+        placeholder="{{ 'Last Name Placeholder' | translate }}"></ion-input>
+    </ion-item>
     <!-- Email -->
-    <div class="form-group">
-      <label class="label" for="input-email">{{ 'auth.register.form.input.email.label' | translate }}</label>
-      <input type="email" class="form-control" id="email" formControlName="email"
-        placeholder="{{ 'auth.register.form.input.email.placeholder' | translate }}" pattern=".+@.+\..+" />
-    </div>
-  
+    <ion-item class="form-group">
+      <ion-label class="label" for="input-email">{{ 'auth.register.form.input.email.label' | translate }}</ion-label>
+      <ion-input type="email" class="form-control" id="email" formControlName="email"
+        placeholder="{{ 'auth.register.form.input.email.placeholder' | translate }}" pattern=".+@.+\..+"></ion-input>
+    </ion-item>
     <!-- Username -->
-    <div class="form-group">
-      <label class="label" for="input-username">{{ 'auth.register.form.input.username.label' | translate }}</label>
-      <input type="text" class="form-control" id="username" formControlName="username"
-        placeholder="{{ 'auth.register.form.input.username.placeholder' | translate }}" />
-    </div>
-  
-
+    <ion-item class="form-group">
+      <ion-label class="label" for="input-username">{{ 'auth.register.form.input.username.label' | translate }}
+      </ion-label>
+      <ion-input type="text" class="form-control" id="username" formControlName="username"
+        placeholder="{{ 'auth.register.form.input.username.placeholder' | translate }}"></ion-input>
+    </ion-item>
     <!-- Phone -->
-    <div class="form-group">
-      <label class="label" for="input-phone">{{ 'Telephone Number' | translate }}</label>
-      <input type="tel" class="form-control" id="phone" formControlName="phone"
-        placeholder="{{ 'Phone Number' | translate }}" />
-    </div>
-
-
+    <ion-item class="form-group">
+      <ion-label class="label" for="input-phone">{{ 'Telephone Number' | translate }}</ion-label>
+      <ion-input type="tel" class="form-control" id="phone" formControlName="phone"
+        placeholder="{{ 'Phone Number' | translate }}"></ion-input>
+    </ion-item>
     <!-- Password -->
-    <div class="form-group">
-      <label class="label" for="input-password">{{ 'auth.register.form.input.password.label' | translate }}</label>
-      <input type="password" class="form-control" id="password" formControlName="password"
-        placeholder="{{ 'auth.register.form.input.password.placeholder' | translate }}" />
-    </div>
-  
+    <ion-item class="form-group">
+      <ion-label class="label" for="input-password">{{ 'auth.register.form.input.password.label' | translate }}
+      </ion-label>
+      <ion-input type="password" class="form-control" id="password" formControlName="password"
+        placeholder="{{ 'auth.register.form.input.password.placeholder' | translate }}"></ion-input>
+    </ion-item>
     <!-- Password confirmation -->
-    <div class="form-group">
-      <label class="label"
-        for="input-password-confirmation">{{ 'auth.register.form.input.repeat_password.label' | translate }}</label>
-      <input type="password" class="form-control" id="password-confirmation" formControlName="passwordConfirmation"
-        placeholder="{{ 'auth.register.form.input.repeat_password.placeholder' | translate }}" />
-    </div>
-  
-    <div class="mt-2">
-      <ion-button type="submit" class="btn btn-primary" (click)="register()" [disabled]="!formGroup.valid">
-        {{ 'auth.register.form.button.register.title' | translate }}
-      </ion-button>
-  
-    </div>
-  
+    <ion-item class="form-group">
+      <label class="label" for="input-password-confirmation">{{ 'auth.register.form.input.repeat_password.label' |
+        translate }}</label>
+      <ion-input type="password" class="form-control" id="password-confirmation" formControlName="passwordConfirmation"
+        placeholder="{{ 'auth.register.form.input.repeat_password.placeholder' | translate }}"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" fill="solid" shape="round" color="secondary" type="submit" class="btn btn-primary"
+      (click)="register()" [disabled]="!formGroup.valid">
+      {{ 'auth.register.form.button.register.title' | translate }}
+    </ion-button>
+
     <section class="mt-2" aria-label="Sign in">
       {{ 'auth.register.form.button.existing_account.text' | translate }}
       <a class="text-link" routerLink="../login">
         {{ 'auth.register.form.button.existing_account.title' | translate }}
       </a>
     </section>
+
   </form>
-  
+
 </ion-content>

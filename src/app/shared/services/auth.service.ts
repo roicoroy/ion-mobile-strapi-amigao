@@ -23,6 +23,6 @@ export class AppAuthService {
         this.iosStorage.storageRemove('token');
         this.iosStorage.storageRemove('user');
         this.store.dispatch(new AuthActions.LogOutUser());
-        this.navigation.navigateForward('/auth/login', 'back');
+        this.navigation.navigateFlip('/home');
     }
 }

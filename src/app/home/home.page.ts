@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonModal, MenuController } from '@ionic/angular';
+import { Store } from '@ngxs/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AppAuthService } from '../shared/services/auth.service';
 import { NavigationService } from '../shared/services/navigation.service';
 import { StrapiService } from '../shared/services/strapi.service';
-import { SettingsService } from '../shared/services/theme-settings.service';
+import { ThemeService } from '../shared/services/theme-settings.service';
 import { UtilityService } from '../shared/services/utility.service';
+import { AuthActions } from '../store/auth.actions';
 import { HomePageFacade } from './home-facade';
 
 @Component({
@@ -38,6 +40,7 @@ export class HomePage implements OnInit, OnDestroy {
   bannerImages: any;
   strapiCompanies: any;
   logo: string;
+  userId: string;
 
   private readonly ngUnsubscribe = new Subject();
 
@@ -47,31 +50,18 @@ export class HomePage implements OnInit, OnDestroy {
     private facade: HomePageFacade,
     private navigation: NavigationService,
     private utitity: UtilityService,
+    private theme: ThemeService,
     private strapi: StrapiService,
-    private settings: SettingsService,
     public menu: MenuController,
+    public store: Store,
   ) {
-    this.viewState$ = this.facade.viewState$;
+    this.userId = this.store.selectSnapshot<string>((state) => state.authState.userId);
+    this.store.dispatch(new AuthActions.LoadUser(this.userId));
   }
+
   ngOnInit() {
-    this.strapi.getAppTheme()
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-      ).subscribe((theme: any) => {
-        // console.log('theme', theme.data.attributes);
-        this.settings.setTheme(theme.data.attributes);
-      });
     this.getAppInfo();
-    this.getTheme();
-  }
-  getTheme() {
-    this.strapi.getAppTheme()
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-      ).subscribe((companies: any) => {
-        // console.log('companies', companies);
-        this.strapiCompanies = companies.data;
-      });
+    // this.theme.initTheme();
   }
 
   getAppInfo() {
@@ -87,11 +77,14 @@ export class HomePage implements OnInit, OnDestroy {
   closeMenu() {
     this.menu.toggle();
   }
-  profilePage() {
-    this.router.navigateByUrl('profile');
-  }
   enterShop() {
     this.router.navigateByUrl('shop/products-list');
+  }
+  authPage() {
+    this.navigation.navigateForward('/auth/login');
+  }
+  profilePage() {
+    this.navigation.navigateForward('/auth/profile/strapi');
   }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(null);

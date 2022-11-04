@@ -1,21 +1,26 @@
-<ion-header>
+<ion-header [translucent]="false" collapse="none">
   <ion-toolbar>
-
-    <ion-title>
-      {{ 'Settings' | translate }}
-    </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="presentPopover($event)" fill="clear">
+      <ion-button (click)="presentPopover($event)">
         <ion-icon name="language-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+
+<ion-content [fullscreen]="false">
+  <ion-header collapse="none">
+    <ion-toolbar>
+      <ion-card-header>
+        <ion-card-title class="app-font">
+          {{ 'Settings' | translate }}
+        </ion-card-title>
+      </ion-card-header>
+    </ion-toolbar>
+  </ion-header>
+  
   <ion-grid>
     <ion-row>
-      <h1>Settings</h1>
-
       <ion-col size="12">
 
       </ion-col>
@@ -26,14 +31,13 @@
   <ion-toolbar>
     <ion-row>
       <ion-col>
-        <ion-button color="primary" expand="block" fill="outline" shape="round"
-          routerLink="/auth/profile/strapi" routerDirection="back">
+        <ion-button color="primary" expand="block" fill="outline" shape="round" (click)="strapiPage()">
           <ion-icon name="arrow-back"></ion-icon>
         </ion-button>
       </ion-col>
       <ion-col>
         <!-- [disabled]="settingsValid ? false : true" [color]="settingsValid ? 'success' : 'danger'" -->
-        <ion-button expand="block" [fill]="'outline'" shape="round" routerLink="/home" routerDirection="forward">
+        <ion-button expand="block" [fill]="'outline'" shape="round" (click)="homePage()">
           <ion-icon name="home"></ion-icon>
         </ion-button>
       </ion-col>

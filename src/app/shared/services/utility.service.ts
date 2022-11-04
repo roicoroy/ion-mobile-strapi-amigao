@@ -63,15 +63,15 @@ export class UtilityService {
   async showToast(msg: string, position: any, duration: number) {
     const toast = await this.toastCtrl.create({
       message: msg,
-      // duration,
+      duration,
       position,
-      buttons: [
-        {
-          text: 'Done',
-          role: 'cancel',
-          handler: () => { }
-        }
-      ]
+      // buttons: [
+      //   {
+      //     text: 'Done',
+      //     role: 'cancel',
+      //     handler: () => { }
+      //   }
+      // ]
     });
     toast.present();
   }
@@ -106,26 +106,20 @@ export class UtilityService {
     roleMessage = `Dismissed with role: ${role}`;
     console.log('roleMessage::: ', roleMessage);
   }
-  async confirm(config?: any) {
+
+  async presentAlert(message?: any) {
     const alert = await this.alertCtrl.create({
-      mode: 'ios',
       cssClass: 'my-custom-class',
-      header: config.header ?? 'Confirm!',
-      message: config.message ?? 'Are you sure?',
+      message: message,
       buttons: [
         {
-          text: 'No',
+          text: 'Ok',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: config.cancelHandler
-        },
-        {
-          text: 'Yes',
-          cssClass: 'primary',
           handler: () => {
 
           },
-        }
+        },
       ]
     });
 

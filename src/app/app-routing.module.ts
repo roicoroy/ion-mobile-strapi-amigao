@@ -15,7 +15,10 @@ const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
-    canActivate:[AppGuard]
+  },
+  {
+    path: 'fcm-details',
+    loadChildren: () => import('./pages/fcm-details/fcm-details.module').then( m => m.FcmDetailsPageModule)
   },
 ];
 

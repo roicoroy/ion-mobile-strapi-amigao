@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { LanguageComponent } from 'src/app/shared/services/language/language-component/language.component';
 import { IonLanguageService } from 'src/app/shared/services/language/language.service';
+import { NavigationService } from 'src/app/shared/services/navigation.service';
 
 @Component({
   selector: 'app-settings',
@@ -14,6 +15,7 @@ export class SettingsComponent implements OnInit {
   constructor(
     public popoverController: PopoverController,
     public languageService: IonLanguageService,
+    private navigation: NavigationService,
   ) { }
 
   ngOnInit() { }
@@ -28,5 +30,11 @@ export class SettingsComponent implements OnInit {
     // const { role } = await popover.onDidDismiss();
     // console.log('onDidDismiss resolved with role', role);
     // this.roleMsg = `Popover dismissed with role: ${role}`;
+  }
+  homePage(){
+    this.navigation.navigateForward('/home', 'forward');
+  }
+  strapiPage(){
+    this.navigation.navigateFlip('/auth/profile/strapi');
   }
 }

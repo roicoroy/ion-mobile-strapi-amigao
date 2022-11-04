@@ -44,7 +44,9 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      mode: 'md'
+    }),
     AppRoutingModule,
     HttpClientModule,
     NgxStripeModule.forRoot(environment.STRIPE_KEY),
@@ -61,10 +63,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
       AuthState
     ]),
     NgxsFormPluginModule.forRoot(),
-    NgxsReduxDevtoolsPluginModule.forRoot({
-      disabled: false
-    }),
-    NgxsLoggerPluginModule.forRoot({ disabled: false }),
+    NgxsReduxDevtoolsPluginModule.forRoot({ disabled: false }),
+    NgxsLoggerPluginModule.forRoot({ disabled: true }),
     NgxsStoragePluginModule.forRoot({
       key: [
         'authState',
@@ -76,7 +76,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     BrowserAnimationsModule,
-    ErrorsModule
+    // ErrorsModule
   ],
   providers: [
     {

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AppGuard } from '../shared/app.guard';
 
 const routes: Routes = [
   {
@@ -15,7 +16,8 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule)
+        loadChildren: () => import('./profile/profile.module').then(m => m.ProfilePageModule),
+        canActivate:[AppGuard]
       },
       {
         path: 'request-password',

@@ -15,16 +15,16 @@
         </ion-col>
     </ion-row>
 
-
-    <ion-list>
-        <ion-item>
-          <ion-label>FCM Message</ion-label>
-          <ion-toggle [checked]="hasToken" (ionChange)="onToggleChange($event)" slot="end"></ion-toggle>
-        </ion-item>
-      </ion-list>
-
     <ion-col>
         <form [formGroup]="strapiProfileForm" ngxsForm="authState.strapiProfileForm">
+            
+            <ion-list>
+                <ion-item>
+                    <ion-label>{{ 'Accepted Push Messages?' }} </ion-label>
+                    <ion-toggle formControlName="accepted_fcm" [checked]="pushAccepted" (ionChange)="onToggleChange($event)" slot="end"></ion-toggle>
+                </ion-item>
+            </ion-list>
+            
             <ion-item>
                 <ion-label position="floating" color="primary">Username</ion-label>
                 <ion-input type="text" formControlName="username"></ion-input>
@@ -50,7 +50,20 @@
                 </ng-container>
             </div>
 
-            <ion-item>
+            <ion-item *ngIf="countries?.length">
+                <ion-label position="floating" color="primary">
+                    Your Country
+                </ion-label>
+                <ion-radio-group formControlName="country">
+                    <ion-item *ngFor="let country of countries">
+                        <ion-radio [value]="country?.name"></ion-radio>
+                        <ion-label>{{country?.name}}</ion-label>
+                    </ion-item>
+                </ion-radio-group>
+            </ion-item>
+
+            
+            <!-- <ion-item>
                 <ion-label position="floating" color="primary">
                     Your Country
                 </ion-label>
@@ -63,7 +76,7 @@
                         <ion-icon name="information-circle-outline"></ion-icon> {{ validation.message }}
                     </div>
                 </ng-container>
-            </div>
+            </div> -->
 
             <ion-item>
                 <ion-label position="floating" color="primary">First Name</ion-label>
@@ -157,26 +170,24 @@
             </div>
         </form>
         <!-- [disabled]="isMedusaProfileReady && strapiProfileForm.valid ? false : true" -->
-        <ion-button
-            color="primary" class="submit-btn" expand="block" (click)="updateStrapiUser()">
+        <ion-button expand="block" (click)="updateStrapiUser()">
             Update Profile
         </ion-button>
     </ion-col>
 </ion-content>
+
 <ion-footer>
     <ion-toolbar>
         <ion-row>
             <ion-col>
-                <ion-button color="primary" expand="block" fill="outline" shape="round" routerLink="/home"
-                    routerDirection="back">
+                <ion-button expand="block" fill="outline" shape="round" (click)="homePage()">
                     <ion-icon name="home"></ion-icon>
                 </ion-button>
             </ion-col>
             <ion-col>
                 <!-- [disabled]="isMedusaProfileReady && strapiProfileForm.valid ? false : true" -->
                 <!-- [color]="isMedusaProfileReady && strapiProfileForm.valid ? 'primary' : 'danger'"  -->
-                <ion-button routerLink="/auth/profile/settings" routerDirection="forward"
-                    expand="block"
+                <ion-button (click)="settingsPage()" expand="block"
                     [fill]="'outline'" shape="round">
                     Settings
                 </ion-button>

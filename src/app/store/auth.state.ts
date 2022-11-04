@@ -11,7 +11,8 @@ export class AuthStateModel {
     strapiProfileForm: {
         model?: any;
     };
-    token: string
+    token: string;
+    userId: string
 }
 @State<AuthStateModel>({
     name: 'authState',
@@ -21,7 +22,8 @@ export class AuthStateModel {
         strapiProfileForm: {
             model: null,
         },
-        token: null
+        token: null,
+        userId: null
     }
 })
 @Injectable()
@@ -29,7 +31,7 @@ export class AuthState {
 
     constructor(
         private dataService: StrapiService,
-        private ionStorageService: IonStorageService,
+        private store: Store,
     ) { }
 
     @Selector()
@@ -55,71 +57,81 @@ export class AuthState {
     }
 
     @Action(AuthActions.SetUser)
-    setUser({ patchState, getState }: StateContext<AuthStateModel>, { payload }: AuthActions.SetUser) {
+    setUser({ patchState, getState, setState }: StateContext<AuthStateModel>, { payload }: AuthActions.SetUser) {
         const state = getState();
+        console.log("payload", payload);
         if (payload?.user) {
-            this.dataService.loadUser(payload.user?.id).subscribe((result: any) => {
-                console.log("result", result);
-                return patchState({
-                    ...state,
-                    user: result,
-                    token: payload?.jwt,
-                    isLoggedIn: true
+            this.dataService.loadUser(payload?.user?.id)
+                .subscribe((result: any) => {
+                    console.log("result", result);
+                    patchState({
+                        ...state,
+                        user: result,
+                        token: payload?.jwt,
+                        isLoggedIn: true
+                    });
                 });
-            });
         };
     }
 
     @Action(AuthActions.SetUploadedUser)
     setUploadedUser({ getState, patchState }: StateContext<AuthStateModel>, { payload }: AuthActions.SetUploadedUser) {
         const state = getState();
-        if (payload?.user.id !== null) {
-            this.dataService.loadUser(payload?.user.id)
-                .pipe(tap((result: any) => {
+        console.log("payload", payload);
+        if (payload?.id !== null) {
+            this.dataService.loadUser(payload?.id)
+                .subscribe((result: any) => {
+                    // console.log("result", result);
                     patchState({
                         ...state,
                         user: result,
                         isLoggedIn: true
                     });
-                    // this.ionStorageService.storageSet('user', result);
-                }
-                ));
-
-
-            // .subscribe((result: any) => {
-            //     this.ionStorageService.storageSet('user', result);
-            //     patchState({
-            //         user: result,
-            //         token: payload?.jwt,
-            //         isLoggedIn: true
-            //     });
-            // });
+                });
         };
     }
+
+    @Action(AuthActions.LoadUser)
+    loadUser({ getState, patchState }: StateContext<AuthStateModel>, { userId }: AuthActions.LoadUser) {
+        const state = getState();
+        // console.log("payload", userId);
+        if (userId !== null) {
+            this.dataService.loadUser(userId)
+                .subscribe((result: any) => {
+                    // console.log("result", result);
+                    patchState({
+                        ...state,
+                        user: result,
+                        isLoggedIn: true
+                    });
+                });
+        };
+    }
+
+    @Action(AuthActions.SetIdToken)
+    setUserId({ patchState, getState, setState }: StateContext<AuthStateModel>, { userId, token }: AuthActions.SetIdToken) {
+        const state = getState();
+        console.log("payload", userId);
+        if (userId) {
+            console.log("payload", userId);
+            patchState({
+                ...state,
+                userId: userId,
+                token: token,
+                isLoggedIn: true
+            });
+        };
+    }
+
     @Action(AuthActions.LogOutUser)
     logOutUser({ getState, patchState }: StateContext<AuthStateModel>) {
         const state = getState();
         return patchState({
             user: null,
             strapiProfileForm: null,
-            isLoggedIn: false
+            isLoggedIn: false,
+            token: null
         });
-    }
-
-    @Action(AuthActions.AuthenticateMedusaUser)
-    authenticateMedusaUser({ getState, patchState }: StateContext<AuthStateModel>, { payload }: AuthActions.AuthenticateMedusaUser) {
-        const state = getState();
-        console.log("payload", payload);
-        // return this.medusaService.AuthenticateMedusaUser(payload)
-        //     .pipe(tap((result: any) => {
-        //         console.log(result);
-        //         // patchState({
-        //         //     ...state,
-        //         //     user: result,
-        //         //     isLoggedIn: true
-        //         // });
-        //     }
-        //     ));
     }
 
     @Action(AuthActions.UpdateStrapiUser)
@@ -127,36 +139,14 @@ export class AuthState {
         const state = getState();
         return this.dataService.updateStrapiUserProfile(userId, profileForm)
             .pipe(tap((result: any) => {
-                patchState({
-                    ...state,
-                    user: result,
-                    isLoggedIn: true
+                this.store.dispatch(new AuthActions.LoadUser(userId)).subscribe((state) => {
+                    patchState({
+                        user: state.authState.user,
+                        isLoggedIn: true
+                    });
                 });
-                this.ionStorageService.storageSet('user', result);
             }
             ));
-    }
-    @Action(AuthActions.PatchFormStateWithProfileAddress)
-    patchFormStateWithProfileAddress({ getState, patchState }: StateContext<AuthStateModel>, { profileForm }: AuthActions.PatchFormStateWithProfileAddress) {
-        const state = getState();
-        return patchState({
-            ...state,
-            strapiProfileForm: {
-                model: {
-                    username: profileForm?.username,
-                    email: profileForm?.email,
-                    first_name: profileForm?.first_name,
-                    last_name: profileForm?.last_name,
-                    address_1: profileForm?.address_1,
-                    address_2: profileForm?.address_2,
-                    city: profileForm?.city,
-                    region_code: profileForm?.country_code,
-                    country: profileForm?.country,
-                    phone: profileForm?.phone,
-                    postal_code: profileForm?.postal_code,
-                }
-            }
-        });
     }
 
     @Action(AuthActions.PatchFormProfileFormStateWithSelectedRegion)
