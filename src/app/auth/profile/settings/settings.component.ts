@@ -32,7 +32,7 @@ export class SettingsComponent implements OnInit {
     // this.roleMsg = `Popover dismissed with role: ${role}`;
   }
   homePage(){
-    this.navigation.navigateForward('/home', 'forward');
+    this.navigation.navigateForward('/home', 'back');
   }
   strapiPage(){
     this.navigation.navigateFlip('/auth/profile/strapi');

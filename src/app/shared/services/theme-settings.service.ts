@@ -4,6 +4,8 @@ import * as Color from 'color';
 import { Storage } from '@ionic/storage';
 import { StrapiService } from './strapi.service';
 import { Subject, takeUntil } from 'rxjs';
+import { Store } from '@ngxs/store';
+import { ThemeActions } from 'src/app/store/theme.actions';
 
 const defaults = {
     primary: '#3880ff',
@@ -158,24 +160,24 @@ export class ThemeService implements OnDestroy {
     renderer: Renderer2;
 
     constructor(
-        private storage: Storage,
         private renderFactory: RendererFactory2,
         @Inject(DOCUMENT) private document: Document,
         private strapi: StrapiService,
+        private store: Store
     ) {
-        // storage.get('theme').then(cssText => {
-        //     this.setGlobalCSS(cssText);
-        // });
         this.renderer = this.renderFactory.createRenderer(null, null);
     }
     initTheme() {
-        this.strapi.getAppTheme()
-            .pipe(
-                takeUntil(this.ngUnsubscribe),
-            ).subscribe((theme: any) => {
-                // console.log('theme', theme.data.attributes);
-                this.setTheme(theme.data.attributes);
-            });
+        const theme = this.store.selectSnapshot<string>((state) => state.themeState.theme);
+        if (theme !== null) {
+            this.strapi.getAppTheme()
+                .pipe(
+                    takeUntil(this.ngUnsubscribe),
+                ).subscribe((theme: any) => {
+                    this.setTheme(theme.data.attributes);
+                    this.store.dispatch(new ThemeActions.SetTheme(theme.data.attributes));
+                });
+        }
     }
 
     setTheme(theme) {
@@ -201,20 +203,13 @@ export class ThemeService implements OnDestroy {
             // medium: '#92949c',
             // light: '#f4f5f8'
         };
-
         const cssText = CSSTextGenerator(customColors);
         // console.log(cssText)
-
         this.setGlobalCSS(cssText);
-        this.storage.set('theme', cssText);
     }
 
     private setGlobalCSS(css: string) {
         this.document.documentElement.style.cssText = css;
-    }
-
-    get storedTheme() {
-        return this.storage.get('theme');
     }
 
     enableDark() {
@@ -229,4 +224,3 @@ export class ThemeService implements OnDestroy {
         this.ngUnsubscribe.complete();
     }
 }
-

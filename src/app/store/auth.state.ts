@@ -60,14 +60,13 @@ export class AuthState {
     setUser({ patchState, getState, setState }: StateContext<AuthStateModel>, { payload }: AuthActions.SetUser) {
         const state = getState();
         console.log("payload", payload);
-        if (payload?.user) {
-            this.dataService.loadUser(payload?.user?.id)
+        if (payload?.user.id !== null) {
+            this.dataService.loadUser(payload?.user.id)
                 .subscribe((result: any) => {
                     console.log("result", result);
                     patchState({
                         ...state,
                         user: result,
-                        token: payload?.jwt,
                         isLoggedIn: true
                     });
                 });

@@ -7,15 +7,7 @@ const config: CapacitorConfig = {
     bundledWebRuntime: false,
     plugins: {
         SplashScreen: {
-            splashFullScreen: false,
-            splashImmersive: false,
-            launchShowDuration: 2000,
-            launchAutoHide: true,
             backgroundColor: "#FF5722",
-            showSpinner: true,
-            androidSpinnerStyle: "large",
-            iosSpinnerStyle: "small",
-            spinnerColor: "#512DA8",
         },
         PushNotifications: {
             presentationOptions: [

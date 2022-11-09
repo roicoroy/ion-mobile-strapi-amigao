@@ -5,22 +5,14 @@
         <ion-list id="inbox-list">
           <ion-menu-toggle auto-hide="false">
             
-            <div *ngIf="user; else loggedOut">
+            <div *ngIf="viewState$ | async as vs">
               <ion-item class="ion-text-center" lines="none">
                 <ion-avatar>
-                  <img [src]="avatar" />
+                  <img [src]="vs.userState?.avatar?.url ?? 'assets/shapes.svg'" />
                 </ion-avatar>
-                <ion-note color="light" slot="end">{{ email }}</ion-note>
+                <ion-note color="light" slot="end">{{ vs.userState?.email ?? 'test@email.com' }}</ion-note>
               </ion-item>
             </div>
-            <ng-template #loggedOut>
-              <ion-item class="ion-text-center" lines="none">
-                <ion-avatar>
-                  <img [src]="'assets/shapes.svg'" />
-                </ion-avatar>
-                <ion-note color="light" slot="end"> user@email.com </ion-note>
-              </ion-item>
-            </ng-template>
 
             <ion-item (click)="logout()" lines="none" detail="false">
               <ion-icon name='home'></ion-icon>

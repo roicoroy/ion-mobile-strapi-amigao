@@ -54,14 +54,13 @@ export class HomePage implements OnInit, OnDestroy {
     private strapi: StrapiService,
     public menu: MenuController,
     public store: Store,
-  ) {
-    this.userId = this.store.selectSnapshot<string>((state) => state.authState.userId);
-    this.store.dispatch(new AuthActions.LoadUser(this.userId));
-  }
+  ) { }
 
   ngOnInit() {
     this.getAppInfo();
-    // this.theme.initTheme();
+    this.theme.initTheme();
+    const userId = this.store.selectSnapshot<string>((state) => state.authState.userId);
+    this.store.dispatch(new AuthActions.LoadUser(userId));
   }
 
   getAppInfo() {

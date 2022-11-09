@@ -33,6 +33,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { ErrorsModule } from './shared/errors/errors.module';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { ThemeState } from './store/theme.state';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localeDe, 'pt');
@@ -62,7 +63,8 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     }),
     IonicStorageModule.forRoot(),
     NgxsModule.forRoot([
-      AuthState
+      AuthState,
+      ThemeState
     ]),
     NgxsFormPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: false }),
@@ -70,6 +72,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     NgxsStoragePluginModule.forRoot({
       key: [
         'authState',
+        'themeState',
       ]
     }),
     AngularFireModule.initializeApp(environment.firebase),
