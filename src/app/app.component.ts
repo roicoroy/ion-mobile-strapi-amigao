@@ -1,17 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlertController, MenuController } from '@ionic/angular';
-import { Store } from '@ngxs/store';
+import { MenuController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { AppFacade } from './app-facade';
 import { AppAuthService } from './shared/services/auth.service';
 import { IonLanguageService } from './shared/services/language/language.service';
 import { NavigationService } from './shared/services/navigation.service';
-import { FcmService } from './shared/services/strapi-fcm.serivce';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AuthActions } from './store/auth.actions';
+import { ThemeService } from './shared/services/theme-settings.service';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +17,7 @@ import { AuthActions } from './store/auth.actions';
 })
 export class AppComponent {
   viewState$: Observable<any>;
-  
+
   public appPages = [
     { title: 'Home', url: '/home', icon: 'home' },
   ];
@@ -29,25 +26,21 @@ export class AppComponent {
     private authService: AppAuthService,
     private ionLanguageService: IonLanguageService,
     public menu: MenuController,
-    private store: Store,
     private navigation: NavigationService,
-    private router: Router,
     private facade: AppFacade,
-    private alertCtrl: AlertController,
-    private fcmService: FcmService,
     private platform: Platform,
     private splashScreen: SplashScreen,
-    private statusBar: StatusBar
+    private statusBar: StatusBar,
+    private theme: ThemeService,
   ) {
     this.initApp();
   }
 
   async initApp() {
     this.platform.ready().then(() => {
-
+      this.theme.initTheme();
       this.ionLanguageService.initTranslate();
       this.viewState$ = this.facade.viewState$;
-
     });
   }
 

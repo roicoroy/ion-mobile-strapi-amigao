@@ -50,7 +50,6 @@ export class HomePage implements OnInit, OnDestroy {
     private facade: HomePageFacade,
     private navigation: NavigationService,
     private utitity: UtilityService,
-    private theme: ThemeService,
     private strapi: StrapiService,
     public menu: MenuController,
     public store: Store,
@@ -58,7 +57,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getAppInfo();
-    this.theme.initTheme();
+    
     const userId = this.store.selectSnapshot<string>((state) => state.authState.userId);
     this.store.dispatch(new AuthActions.LoadUser(userId));
   }
