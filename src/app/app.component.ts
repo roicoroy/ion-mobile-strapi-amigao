@@ -35,18 +35,13 @@ export class AppComponent {
   ) {
     this.initApp();
   }
-
   async initApp() {
     this.platform.ready().then(() => {
       this.theme.initTheme();
       this.ionLanguageService.initTranslate();
       this.viewState$ = this.facade.viewState$;
-    });
-  }
-
-
-  checkout() {
-    this.menu.toggle('end').then(() => {
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
     });
   }
   logout(): void {

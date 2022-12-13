@@ -40,6 +40,7 @@ export class HomePage implements OnInit, OnDestroy {
   bannerImages: any;
   strapiCompanies: any;
   logo: string;
+  
   userId: string;
 
   private readonly ngUnsubscribe = new Subject();
