@@ -57,11 +57,13 @@ export class LoginPage implements OnInit, OnDestroy {
         takeUntil(this.ngUnsubscribe),
       ).subscribe((res: any) => {
         this.user = res;
+        console.log(res);
+        if (res) {
+          this.store.dispatch(new AuthActions.SetIdToken(res?.user?.id, res?.jwt))
+          this.store.dispatch(new AuthActions.SetUser(res));
+          this.navigation.navigateForward('/home', 'forward');
+        }
       });
-
-    this.store.dispatch(new AuthActions.SetIdToken(this.user?.user?.id, this.user?.jwt))
-    this.store.dispatch(new AuthActions.SetUser(this.user));
-    this.navigation.navigateForward('/home', 'forward');
   }
   resetPassword(): void {
     this.navigation.navigateForward(authFlow + AUTH_ROUTES.resetPassword, 'forward');
