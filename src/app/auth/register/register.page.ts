@@ -4,12 +4,12 @@ import { UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
-import { IonStorageService } from 'src/app/shared/services/ionstorage.service';
-import { StrapiService } from 'src/app/shared/services/strapi.service';
+import { IonStorageService } from 'src/app/shared/services/storage/ionstorage.service';
+import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
 import { IReqAuthRegister } from 'src/app/shared/types/requests/ReqAuthRegister';
 import { IErrorRes } from 'src/app/shared/types/responses/AuthError';
 import Validation from 'src/app/shared/utils/validation';
-import { AuthActions } from 'src/app/store/auth.actions';
+import { AuthActions } from 'src/app/store/auth/auth.actions';
 
 
 @Component({

@@ -10,8 +10,8 @@ export const environment = {
     measurementId: "G-DW9N8LQLDQ"
   },
   production: true,
-  API_BASE_PATH: 'https://strapi-wkfc.onrender.com/api',
-  BASE_PATH: 'https://strapi-wkfc.onrender.com',
+  API_BASE_PATH: 'https://strapi-passwordless.onrender.com/api',
+  BASE_PATH: 'https://strapi-passwordless.onrender.com',
   STRIPE_KEY: 'pk_test_2qqvb6DTqKondL46mnEjZ68e',
   populate: '?populate=*'
 };

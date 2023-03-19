@@ -22,24 +22,10 @@
       </ion-card-header>
     </ion-toolbar>
   </ion-header>
-  <ion-grid>
-    <ion-row class="top-row">
-      <ion-slides [options]="slideOpts" mode="ios" pager="ios" scrollbar="ios">
-        <ion-slide *ngFor="let item of bannerImages">
-          <ion-img [src]="item.attributes.formats.small?.url"></ion-img>
-        </ion-slide>
-      </ion-slides>
-    </ion-row>
-  </ion-grid>
 </ion-content>
 <ion-footer>
   <ion-toolbar>
     <ion-row>
-      <!-- <ion-col>
-        <ion-button color="primary" expand="block" fill="solid" shape="round" (click)="authPage()">
-          {{ 'Login' | uppercase | translate }}!
-        </ion-button>
-      </ion-col> -->
       <ion-col>
         <ion-button color="primary" expand="block" fill="solid" shape="round" (click)="profilePage()">
           {{ 'Strapi Profile' | uppercase | translate }}!

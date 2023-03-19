@@ -2,13 +2,13 @@ import { Component, ViewChild } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { AppFacade } from './app-facade';
-import { AppAuthService } from './shared/services/auth.service';
+import { AppAuthService } from './shared/services/auth/auth.service';
 import { IonLanguageService } from './shared/services/language/language.service';
-import { NavigationService } from './shared/services/navigation.service';
+import { NavigationService } from './shared/services/navigation/navigation.service';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { ThemeService } from './shared/services/theme-settings.service';
+import { ThemeService } from './shared/services/theme/theme-settings.service';
 
 @Component({
   selector: 'app-root',
@@ -37,12 +37,14 @@ export class AppComponent {
   }
   async initApp() {
     this.platform.ready().then(() => {
-      this.theme.initTheme();
+      this.theme.themeInit();
       this.ionLanguageService.initTranslate();
       this.viewState$ = this.facade.viewState$;
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-    });
+    }).catch(e => {
+      throw e;
+    });;
   }
   logout(): void {
     this.authService.logout();
@@ -52,6 +54,5 @@ export class AppComponent {
   }
   loginPage() {
     this.navigation.navigateFlip('/auth/login');
-    // this.router.navigateByUrl('/auth/login');
   }
 }

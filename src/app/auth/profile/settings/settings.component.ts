@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { LanguageComponent } from 'src/app/shared/services/language/language-component/language.component';
 import { IonLanguageService } from 'src/app/shared/services/language/language.service';
-import { NavigationService } from 'src/app/shared/services/navigation.service';
+import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
 
 @Component({
   selector: 'app-settings',

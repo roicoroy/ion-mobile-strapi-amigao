@@ -10,10 +10,10 @@ export const environment = {
     measurementId: "G-DW9N8LQLDQ"
   },
   production: false,
-  API_BASE_PATH: 'http://localhost:1337/api',
-  // API_BASE_PATH: 'https://strapi-wkfc.onrender.com/api',
-  BASE_PATH: 'http://localhost:1337',
-  // BASE_PATH: 'https://strapi-wkfc.onrender.com',
+  // API_BASE_PATH: 'http://localhost:1337/api',
+  API_BASE_PATH: 'https://strapi-h93z.onrender.com/api',
+  // BASE_PATH: 'http://localhost:1337',
+  BASE_PATH: 'https://strapi-h93z.onrender.com',
   STRIPE_KEY: 'pk_test_2qqvb6DTqKondL46mnEjZ68e',
   populate: '?populate=*'
 };

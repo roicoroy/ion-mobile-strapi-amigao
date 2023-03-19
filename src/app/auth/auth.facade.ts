@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AuthState } from '../store/auth.state';
+import { AuthState } from '../store/auth/strapi-auth.state-bk';
 
 @Injectable({
     providedIn: 'root'
@@ -29,4 +29,3 @@ export class AuthFacade {
     }
 
 }
-

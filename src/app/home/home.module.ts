@@ -6,8 +6,6 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { LanguageComponent } from '../shared/services/language/language-component/language.component';
-import { ComponentsModule } from '../components/components.module';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
@@ -19,7 +17,6 @@ import { NgxsModule } from '@ngxs/store';
     IonicModule,
     HomePageRoutingModule,
     TranslateModule,
-    ComponentsModule,
     NgxsModule,
     NgxsFormPluginModule,
     NgxsStoragePluginModule

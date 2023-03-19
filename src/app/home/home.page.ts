@@ -3,13 +3,12 @@ import { Router } from '@angular/router';
 import { IonModal, MenuController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { AppAuthService } from '../shared/services/auth.service';
-import { NavigationService } from '../shared/services/navigation.service';
-import { StrapiService } from '../shared/services/strapi.service';
-import { ThemeService } from '../shared/services/theme-settings.service';
-import { UtilityService } from '../shared/services/utility.service';
-import { AuthActions } from '../store/auth.actions';
-import { HomePageFacade } from './home-facade';
+import { AppAuthService } from '../shared/services/auth/auth.service';
+import { NavigationService } from '../shared/services/navigation/navigation.service';
+import { StrapiService } from '../shared/services/strapi/strapi.service';
+import { UtilityService } from '../shared/services/utility/utility.service';
+
+import { HomePageFacade } from './home-facade'
 
 @Component({
   selector: 'app-home',
@@ -40,7 +39,7 @@ export class HomePage implements OnInit, OnDestroy {
   bannerImages: any;
   strapiCompanies: any;
   logo: string;
-  
+
   userId: string;
 
   private readonly ngUnsubscribe = new Subject();
@@ -57,21 +56,19 @@ export class HomePage implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.getAppInfo();
-    
-    const userId = this.store.selectSnapshot<string>((state) => state.authState.userId);
-    this.store.dispatch(new AuthActions.LoadUser(userId));
+    // const userId = this.store.selectSnapshot<string>((state) => state.authState.userId);
+    // this.store.dispatch(new AuthActions.LoadUser(userId));
   }
 
   getAppInfo() {
-    this.strapi.getAppInfo()
-      .pipe(
-        takeUntil(this.ngUnsubscribe),
-      ).subscribe((info: any) => {
-        this.logo = info.data.attributes.logo.data.attributes.url;
-        this.bannerImages = info.data.attributes.slider.data;
-        this.video_cover = info.data.attributes.video_cover.data.attributes.url;
-      });
+    // this.strapi.getAppInfo()
+    //   .pipe(
+    //     takeUntil(this.ngUnsubscribe),
+    //   ).subscribe((info: any) => {
+    //     this.logo = info.data.attributes.logo.data.attributes.url;
+    //     this.bannerImages = info.data.attributes.slider.data;
+    //     this.video_cover = info.data.attributes.video_cover.data.attributes.url;
+    //   });
   }
   closeMenu() {
     this.menu.toggle();

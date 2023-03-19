@@ -4,12 +4,12 @@ import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms'
 import { ToastController, LoadingController } from '@ionic/angular';
 import { Store } from '@ngxs/store';
 import { Observable, pipe, Subject, takeUntil } from 'rxjs';
-import { NavigationService } from 'src/app/shared/services/navigation.service';
-import { FcmService } from 'src/app/shared/services/strapi-fcm.serivce';
-import { StrapiService } from 'src/app/shared/services/strapi.service';
-import { UtilityService } from 'src/app/shared/services/utility.service';
-import { AuthStateModel } from 'src/app/store/auth.state';
-import { AuthActions } from '../../../store/auth.actions';
+import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
+import { FcmService } from 'src/app/shared/services/fcm/fcm.serivce';
+import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
+import { UtilityService } from 'src/app/shared/services/utility/utility.service';
+import { AuthActions } from 'src/app/store/auth/auth.actions';
+import { IStrapiStateModel } from 'src/app/store/auth/strapi-auth.state-bk';
 import { ProfileFacade } from '../profile.facade';
 import { UploadService } from './upload.service';
 
@@ -143,7 +143,7 @@ export class StrapiComponent implements OnInit, AfterViewInit {
     // });
     // console.log('this.strapiUser', this.strapiUser);
 
-    this.strapiUser = this.store.selectSnapshot<AuthStateModel>((state) => state.authState.user);
+    this.strapiUser = this.store.selectSnapshot<IStrapiStateModel>((state) => state.strapiState.user);
 
     this.regionsList = [];
     this.countries = [

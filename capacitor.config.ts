@@ -1,14 +1,23 @@
 import { CapacitorConfig } from '@capacitor/cli';
+import { KeyboardResize } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
-    appId: "uk.mobile.alpha",
-    appName: "ion-mobile-strapi-news",
+    appId: "uk.amigao.news",
+    appName: "News",
     webDir: "www",
     bundledWebRuntime: false,
     plugins: {
         SplashScreen: {
-            backgroundColor: "#FF5722",
-        },
+            androidScaleType: "CENTER_CROP",
+            splashFullScreen: false,
+            splashImmersive: false,
+            launchShowDuration: 2000,
+            launchAutoHide: true,
+            backgroundColor: "#FF5722"
+          },
+          Keyboard: {
+            resize: KeyboardResize.Body
+          },
         PushNotifications: {
             presentationOptions: [
                 "alert"

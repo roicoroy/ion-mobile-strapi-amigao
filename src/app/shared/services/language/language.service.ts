@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Device, GetLanguageCodeResult } from '@capacitor/device';
 import { LanguageModel } from './language.model';
-import { IonStorageService } from '../ionstorage.service';
+import { IonStorageService } from '../storage/ionstorage.service';
 export const SAVED_LANGUAGE = 'saved_language';
 @Injectable({
   providedIn: 'root'

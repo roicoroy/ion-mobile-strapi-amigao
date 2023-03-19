@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
-import { AppGuard } from './shared/app.guard';
+import { AppGuard } from './shared/guard/app.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'auth/login',
     pathMatch: 'full'
   },
   {

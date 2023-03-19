@@ -4,11 +4,11 @@ import { Route, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngxs/store';
 import { delay, Subject, takeUntil, tap } from 'rxjs';
-import { NavigationService } from 'src/app/shared/services/navigation.service';
-import { StrapiService } from 'src/app/shared/services/strapi.service';
+import { NavigationService } from 'src/app/shared/services/navigation/navigation.service';
+import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
 import { IReqAuthLogin } from 'src/app/shared/types/requests/ReqAuthLogin';
 import { IErrorRes } from 'src/app/shared/types/responses/AuthError';
-import { AuthActions } from 'src/app/store/auth.actions';
+import { AuthActions } from 'src/app/store/auth/auth.actions';
 import { authFlow, AUTH_ROUTES } from '../navigation.const';
 
 @Component({

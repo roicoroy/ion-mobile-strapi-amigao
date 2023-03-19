@@ -20,8 +20,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { NgxsModule } from '@ngxs/store';
 import localeDe from '@angular/common/locales/de';
 import localeEn from '@angular/common/locales/en';
-import { AuthState } from './store/auth.state';
-import { StrapiAuthInterceptor } from './shared/strapi.interceptor';
+import { StrapiAuthInterceptor } from './shared/interceptor/strapi.interceptor';
 import { environment } from '../environments/environment';
 
 import { AngularFireModule } from '@angular/fire/compat';
@@ -30,10 +29,16 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
-import { ErrorsModule } from './shared/errors/errors.module';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { ThemeState } from './store/theme.state';
+import { ThemeState } from './store/theme/theme.state';
+import { ApplicationState } from './store/application/application.state';
+import { AuthState } from './store/auth/auth.state';
+import { NativeStateModule } from './store/native/native.state';
+import { UserState } from './store/user/user.state';
+import { KeyboardState } from './store/keyboard/keyboard.state';
+import { MenuState } from './store/menu/menu.state';
+import { LanguageState } from './store/language/language.state';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localeDe, 'pt');
@@ -63,8 +68,15 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     }),
     IonicStorageModule.forRoot(),
     NgxsModule.forRoot([
+      ThemeState,
+      UserState,
+      NativeStateModule,
       AuthState,
-      ThemeState
+      ApplicationState,
+      KeyboardState,
+      MenuState,
+      ApplicationState,
+      LanguageState
     ]),
     NgxsFormPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot({ disabled: false }),
@@ -81,7 +93,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     AngularFirestoreModule,
     AngularFireDatabaseModule,
     BrowserAnimationsModule,
-    // ErrorsModule
+    // AppStatesModule
   ],
   providers: [
     StatusBar,
@@ -97,4 +109,3 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
   bootstrap: [AppComponent],
 })
 export class AppModule { }
-

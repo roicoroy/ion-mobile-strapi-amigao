@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { finalize } from 'rxjs';
-import { IonStorageService } from 'src/app/shared/services/ionstorage.service';
-import { StrapiService } from 'src/app/shared/services/strapi.service';
+import { IonStorageService } from 'src/app/shared/services/storage/ionstorage.service';
+import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

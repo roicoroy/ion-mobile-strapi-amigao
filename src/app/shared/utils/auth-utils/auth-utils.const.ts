@@ -1,0 +1,12 @@
+export const AuthInvalidCredentialsAction = 'auth-invalid-credentials';
+export const AuthInvalidCredentialsAtUserIdentificationAction = 'auth-invalid-credentials-at-user-identification';
+export const AuthInvalidCredentialsAtOneTimePasswordAction = 'auth-invalid-credentials-at-one-time-password';
+export const AuthInvalidCredentialsAtIdentityQuestionnaireAction = 'auth-invalid-credentials-at-identity-questionnaire';
+export const AuthAccountLockedAction = 'auth-account-locked';
+export const AuthAccountLockedAtUserIdentificationAction = 'auth-account-locked-at-user-identification';
+export const AuthAccountLockedAtOneTimePasswordAction = 'auth-account-locked-at-one-time-password';
+export const AuthSetPasswordViolationAction = 'auth-set-password-violation';
+export const AuthNotAuthenticatedAction = 'auth-not-authenticated';
+export const AuthReloadAppAction = 'auth-reload-app';
+export const AuthMaxAttemptForIdentityQuestion = 'auth-max-attempt-for-identity-question';
+export const AuthUserQuestionUnavailable = 'auth-user-question-unavailable';

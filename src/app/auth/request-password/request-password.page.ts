@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { StrapiService } from 'src/app/shared/services/strapi.service';
+import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
 
 @Component({
   selector: 'app-request-password',
@@ -13,7 +13,7 @@ import { StrapiService } from 'src/app/shared/services/strapi.service';
 export class RequestPasswordPage {
 
   public formGroup: FormGroup = new UntypedFormGroup({
-    email: new UntypedFormControl('', [Validators.required, Validators.email])
+    username: new UntypedFormControl('roicoroy@yahoo.com.br', [Validators.required, Validators.email])
   });
 
   public error: any;
@@ -26,8 +26,9 @@ export class RequestPasswordPage {
   ) { }
 
   public requestPasswordReset(): void {
+
     this.authService
-      .requestPasswordReset(this.formGroup.value.email)
+      .requestPasswordReset(this.formGroup.value.username)
       .then(() => {
         this.formGroup.get('email')?.setValue('');
         this.router.navigateByUrl('home');

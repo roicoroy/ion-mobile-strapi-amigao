@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormGroup, UntypedFormGroup, UntypedFormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { StrapiService } from 'src/app/shared/services/strapi.service';
+import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
 import { IReqPasswordReset } from 'src/app/shared/types/requests/ReqPasswordReset';
 import Validation from 'src/app/shared/utils/validation';
 
