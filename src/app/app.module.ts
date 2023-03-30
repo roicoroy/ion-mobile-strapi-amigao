@@ -29,16 +29,14 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+
 import { ThemeState } from './store/theme/theme.state';
 import { ApplicationState } from './store/application/application.state';
 import { AuthState } from './store/auth/auth.state';
-import { NativeStateModule } from './store/native/native.state';
-import { UserState } from './store/user/user.state';
 import { KeyboardState } from './store/keyboard/keyboard.state';
 import { MenuState } from './store/menu/menu.state';
 import { LanguageState } from './store/language/language.state';
+import { SplashScreenState } from './store/splash-screen/splash-screen.state';
 
 registerLocaleData(localeEn, 'en');
 registerLocaleData(localeDe, 'pt');
@@ -69,8 +67,7 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     IonicStorageModule.forRoot(),
     NgxsModule.forRoot([
       ThemeState,
-      UserState,
-      NativeStateModule,
+      // SplashScreenState,
       AuthState,
       ApplicationState,
       KeyboardState,
@@ -83,8 +80,9 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     NgxsLoggerPluginModule.forRoot({ disabled: true }),
     NgxsStoragePluginModule.forRoot({
       key: [
-        'authState',
-        'themeState',
+        'auth',
+        'theme',
+        'language'
       ]
     }),
     AngularFireModule.initializeApp(environment.firebase),
@@ -96,8 +94,6 @@ export function createTranslateLoader(http: HttpClient): TranslateHttpLoader {
     // AppStatesModule
   ],
   providers: [
-    StatusBar,
-    SplashScreen,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: StrapiAuthInterceptor,

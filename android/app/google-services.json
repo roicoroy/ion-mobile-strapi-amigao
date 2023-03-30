@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "247045122799",
+    "project_id": "ion-amigao",
+    "storage_bucket": "ion-amigao.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247045122799:android:15dfad99e0af669f47891a",
+        "android_client_info": {
+          "package_name": "uk.mobile.amigao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247045122799-mmdkhtkqgbhb30lq6a2p4tf5m998f3jq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYNeY0olBUUjWkOKmL9pubAjqXGtTTjJ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247045122799-3rb5b7c3h1s6pjjlgs7fdmptns31653a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,7 +3,7 @@ import { State, Action, Selector, StateContext } from '@ngxs/store';
 import { ReloadApp, SetAppReloadSource, ResetSessionTimer, SetAppActiveState, UpgradeApp } from './application.actions';
 import { AppReloadSource, AppActiveState, ONE_HOUR_IN_MILLISECONDS } from './application.const';
 import { Injectable } from '@angular/core';
-import { ShowSplashScreen } from '../native/states/splash-screen/splash-screen.actions';
+import { ShowSplashScreen } from '../splash-screen/splash-screen.actions';
 import { ApplicationService } from 'src/app/shared/services/application/application.service';
 
 export interface IApplicationStateModel {

@@ -9,9 +9,9 @@ import { FcmService } from 'src/app/shared/services/fcm/fcm.serivce';
 import { StrapiService } from 'src/app/shared/services/strapi/strapi.service';
 import { UtilityService } from 'src/app/shared/services/utility/utility.service';
 import { AuthActions } from 'src/app/store/auth/auth.actions';
-import { IStrapiStateModel } from 'src/app/store/auth/strapi-auth.state-bk';
 import { ProfileFacade } from '../profile.facade';
 import { UploadService } from './upload.service';
+import { IStrapiStateModel } from 'src/app/store/auth/auth.interface';
 
 @Component({
   selector: 'ng-ion-workspace-strapi',
@@ -143,7 +143,7 @@ export class StrapiComponent implements OnInit, AfterViewInit {
     // });
     // console.log('this.strapiUser', this.strapiUser);
 
-    this.strapiUser = this.store.selectSnapshot<IStrapiStateModel>((state) => state.strapiState.user);
+    this.strapiUser = this.store.selectSnapshot<IStrapiStateModel>((state) => state.auth.user);
 
     this.regionsList = [];
     this.countries = [
@@ -186,7 +186,8 @@ export class StrapiComponent implements OnInit, AfterViewInit {
 
   onToggleChange($event) {
     this.pushAccepted = $event.detail.checked;
-    this.updateStrapiUser()
+    // this.updateStrapiUser();
+    this.fcm.initPush();
   }
 
   updateStrapiUser() {

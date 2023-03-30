@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Amigao</string>
+    <string name="title_activity_main">Amigao</string>
+    <string name="package_name">uk.mobile.amigao</string>
+    <string name="custom_url_scheme">uk.mobile.amigao</string>
+</resources>

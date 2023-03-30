@@ -37,7 +37,6 @@ export class StrapiService {
             identifier: email,
             password
         }
-        // console.log(data);
         return this.httpClient.post(environment.BASE_PATH + '/api/auth/local', data, { headers: this.headers });
     }
 
@@ -96,6 +95,7 @@ export class StrapiService {
     public updateStrapiUserProfile(userId, profileForm): Observable<any> {
         return this.httpClient.put(environment.BASE_PATH + '/api/users/' + userId, profileForm);
     }
+
     public refreshUserState(user?) {
         if (user) {
             const myUser: IUser = {
@@ -122,25 +122,30 @@ export class StrapiService {
             console.log('myUser', myUser);
         }
     }
+
     public async updateProfile(updateReq: IReqUserUpdate): Promise<void> {
         const res: IUser | HttpErrorResponse = await this.updateUser(updateReq);
         if (res) {
             this.user = res as IUser;
         }
     }
+
     public async requestPasswordReset(email: string): Promise<void> {
         const res: IResRequestPasswordReset | HttpErrorResponse =
             await this.postRequestPasswordReset(email);
     }
+
     public async resetPassword(
         passwordResetReq: IReqPasswordReset
     ): Promise<void> {
         const res: IResPasswordReset | HttpErrorResponse =
             await this.postResetPassword(passwordResetReq);
     }
+
     public loadUser(userId) {
         return this.httpClient.get(environment.BASE_PATH + '/api/users/' + userId + '?populate=*', { headers: this.headers })
     }
+
     private async updateUser(updateReq: any): Promise<IUser | HttpErrorResponse> {
         try {
             const data = {
@@ -158,30 +163,24 @@ export class StrapiService {
             throw new HttpErrorResponse(error);
         }
     }
+
     private async postRequestPasswordReset(
-        username: string
-    ): Promise<IResRequestPasswordReset | HttpErrorResponse> {
+        email: string
+      ): Promise<IResRequestPasswordReset | HttpErrorResponse> {
         try {
-            const payload = {
-                // "email": 'test@test.com',
-                // "username": 'roicoroy@mercadoamigao.com',
-                "email": "roicoroy@mercadoamigao.com",
-                "username": "roicoroyAmigao",
-                "context": {}
-            }
+          const res: IResRequestPasswordReset | HttpErrorResponse =
+            (await lastValueFrom(
+              this.httpClient.post(environment.BASE_PATH + '/api/auth/send-email-confirmation', {
+                email
+              })
+            )) as IResRequestPasswordReset | HttpErrorResponse;
 
-            console.log(payload);
-            const res: IResRequestPasswordReset | HttpErrorResponse =
-                (await lastValueFrom(
-                    // this.httpClient.post(environment.BASE_PATH + '/api/auth/forgot-password', {
-                    this.httpClient.post(environment.BASE_PATH + '/api/passwordless/send-link', payload, { headers: this.headers })
-                )) as IResRequestPasswordReset | HttpErrorResponse;
-
-            return null;
+          return res;
         } catch (error) {
-            throw new HttpErrorResponse(error);
+          throw new HttpErrorResponse(error);
         }
-    }
+      }
+
     private async postResetPassword(
         passwordResetReq: IReqPasswordReset
     ): Promise<IResPasswordReset | HttpErrorResponse> {
@@ -198,6 +197,7 @@ export class StrapiService {
             throw new HttpErrorResponse(error);
         }
     }
+
     public async callbackProviderLogin(
         params?: string,
         provider?

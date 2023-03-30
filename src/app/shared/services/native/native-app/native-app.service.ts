@@ -1,7 +1,7 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
+import { Injectable, Output, EventEmitter, NgZone } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { BatteryInfo, Device, DeviceId, DeviceInfo, GetLanguageCodeResult } from '@capacitor/device';
-import { App, AppInfo, AppState } from '@capacitor/app';
+import { App, AppInfo, AppState, URLOpenListenerEvent } from '@capacitor/app';
 import { AppLauncher } from '@capacitor/app-launcher';
 import { SetAppActiveState } from 'src/app/store/application/application.actions';
 import { AppActiveState } from 'src/app/store/application/application.const';
@@ -14,12 +14,25 @@ export class NativeAppService {
 
     constructor(
         private readonly store: Store,
-    ) {
-        App.addListener('appStateChange', (state: AppState) => {
+        private zone: NgZone,
+    ) { }
+
+    async initNative() {
+        const appUrlOpen = await App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
+            console.log('appUrlOpen listener init');
+            this.zone.run(() => {
+                console.log('appUrlOpen zone run');
+                const slug = event.url.split(".app").pop();
+                console.log(slug);
+            });
+        });
+        const appStateChange = await App.addListener('appStateChange', (state: AppState) => {
             const activeState = state.isActive ? AppActiveState.FOREGROUND : AppActiveState.BACKGROUND;
             this.appStateChange.emit(activeState);
             this.store.dispatch(new SetAppActiveState(activeState));
         });
+
+        return { appUrlOpen, appStateChange };
     }
 
     async canOpenUrl(url: string): Promise<{ value: boolean }> {

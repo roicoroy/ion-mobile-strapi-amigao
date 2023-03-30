@@ -17,7 +17,7 @@ import { NavigationService } from '../navigation/navigation.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { AlertController } from '@ionic/angular';
-import { IStrapiStateModel } from 'src/app/store/auth/strapi-auth.state-bk';
+import { IStrapiStateModel } from 'src/app/store/auth/auth.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -37,54 +37,18 @@ export class FcmService {
         private store: Store,
         private alertCtrl: AlertController,
     ) {
-        this.user = this.store.selectSnapshot<IStrapiStateModel>((state) => state.strapiState.user);
+        // this.user = this.store.selectSnapshot<IStrapiStateModel>((state) => state.auth.user);
+        // console.log(this.user);
     }
 
-    async initPush() {
-        const device = await Device.getInfo();
-        if (device.platform !== 'web') {
-
-            let permStatus = await PushNotifications.checkPermissions();
-
-            if (permStatus.receive !== 'granted') {
-                this.utility.presentAlert('User denied permissions!');
-                throw new Error('User denied permissions!');
-            }
-
-            await PushNotifications.removeAllListeners();
-            this.registerPush();
-
-        } else {
-            // this.utility.presentAlert('Need to be on mobile');
-        }
-    }
-
-    private async registerPush() {
-        PushNotifications.requestPermissions().then((permission) => {
-            if (permission.receive == 'granted') {
-                PushNotifications.register();
-                this.addFcmPushListerners();
-            } else {
-                // No permission for push granted
-            }
-        });
-    }
-
-    async addFcmPushListerners() {
-
-        PushNotifications.addListener('registration', async (token: PushNotificationToken) => {
-            // const deviceInfo = await Device.getInfo();
-            // console.log('My token: ' + JSON.stringify(token));
-            this.postFcmTokenToStrapi(token);
-        }
-        );
-
+    async initListerners(): Promise<void> {
+        console.error('initListerners: ');
         PushNotifications.addListener('registrationError', (error: any) => {
             console.log('Error: ' + JSON.stringify(error));
         });
 
         PushNotifications.addListener('pushNotificationReceived', async (notification: PushNotificationSchema) => {
-            // console.log('Push received: ', notification);
+            console.log('Push received: ', notification);
             const alert = await this.alertCtrl.create({
                 header: 'You got a message',
                 subHeader: 'FCM message',
@@ -94,7 +58,8 @@ export class FcmService {
                     {
                         text: 'Ok',
                         handler: () => {
-                            this.navigation.navigateForwardParams(`/fcm-details`, JSON.stringify(notification));
+                            // this.navigation.navigateForwardParams(`/fcm-details`, JSON.stringify(notification));
+                            console.log(notification)
                         },
                     },
                     {
@@ -121,15 +86,34 @@ export class FcmService {
 
     }
 
-    postFcmTokenToStrapi(fcmToken) {
-        console.log('fcmToken :>> ', fcmToken);
-        if (this.user.device_token == null || this.user.device_token !== fcmToken) {
-            console.log('user :>> ', this.user);
-            this.http.put(environment.BASE_PATH + '/api/users/' + this.user?.id, {
-                device_token: fcmToken.value,
-            }).subscribe((user) => {
-                console.log('fcm token posted user ', user);
-            });
+    async initPush() {
+        let permStatus = await PushNotifications.checkPermissions();
+        if (permStatus.receive !== 'granted') {
+            this.utility.presentAlert('User denied permissions!');
+            throw new Error('User denied permissions!');
         }
+        await PushNotifications.removeAllListeners();
+        PushNotifications.requestPermissions()
+            .then(async (permission) => {
+                if (permission.receive == 'granted') {
+                    await PushNotifications.register();
+                    PushNotifications.addListener('registration', async (token: PushNotificationToken) => {
+                        console.log('My token: ' + JSON.stringify(token));
+                        if (token != null) {
+                            this.postFcmTokenToStrapi(token);
+                        }
+                    }
+                    );
+                }
+            });
+    }
+    postFcmTokenToStrapi(fcmToken) {
+        this.user = this.store.selectSnapshot<any>((state) => state.auth.user);
+        console.log('fcmToken :>> ', fcmToken);
+        this.http.put(environment.BASE_PATH + '/api/users/' + this.user?.id, {
+            device_token: fcmToken.value,
+        }).subscribe((user) => {
+            console.log('fcm token posted user ', user);
+        });
     }
 }

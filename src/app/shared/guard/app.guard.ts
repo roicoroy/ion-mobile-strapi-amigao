@@ -51,7 +51,7 @@ export class AppGuard implements CanActivate, CanActivateChild {
       this.urlPath = e.route?.path;
     });
 
-    this.isLoggedIn = this.store.selectSnapshot<boolean>((state) => state.strapiState.isLoggedIn);
+    this.isLoggedIn = this.store.selectSnapshot<boolean>((state) => state.auth.isLoggedIn);
 
 
     if (!this.isLoggedIn) {

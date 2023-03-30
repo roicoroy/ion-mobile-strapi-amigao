@@ -21,7 +21,7 @@ export class LoginPage implements OnInit, OnDestroy {
   public loginReq: IReqAuthLogin;
   user;
   public formGroup: UntypedFormGroup = new UntypedFormGroup({
-    identifier: new UntypedFormControl('test@test.com', [
+    identifier: new UntypedFormControl('roicoroy@mercadoamigao.com', [
       Validators.required,
       Validators.email
     ]),

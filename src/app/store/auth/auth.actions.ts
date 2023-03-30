@@ -1,4 +1,3 @@
-import { LoginMode } from './auth.interface';
 import { AppReloadSource } from '../application/application.const';
 import { IUser } from "../../shared/types/models/User";
 
@@ -37,7 +36,7 @@ export namespace AuthActions {
 
 export class SetLoginMode {
     public static readonly type = '[Auth] Set Login Mode';
-    constructor(public payload: LoginMode) { };
+    constructor(public payload: any) { };
 }
 
 export class SetUserIdAndEnvironment {

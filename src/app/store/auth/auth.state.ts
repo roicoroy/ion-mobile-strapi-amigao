@@ -14,7 +14,7 @@ export class IAuthState {
     userId: string
 }
 @State<IAuthState>({
-    name: 'authState',
+    name: 'auth',
     defaults: {
         user: null,
         isLoggedIn: null,

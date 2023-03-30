@@ -2,8 +2,8 @@ import { CapacitorConfig } from '@capacitor/cli';
 import { KeyboardResize } from '@capacitor/keyboard';
 
 const config: CapacitorConfig = {
-    appId: "uk.amigao.news",
-    appName: "News",
+    appId: "uk.mobile.amigao",
+    appName: "Amigao",
     webDir: "www",
     bundledWebRuntime: false,
     plugins: {

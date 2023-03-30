@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { AppFacade } from './app-facade';
@@ -6,9 +6,9 @@ import { AppAuthService } from './shared/services/auth/auth.service';
 import { IonLanguageService } from './shared/services/language/language.service';
 import { NavigationService } from './shared/services/navigation/navigation.service';
 import { Platform } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ThemeService } from './shared/services/theme/theme-settings.service';
+import { FcmService } from './shared/services/fcm/fcm.serivce';
+import { NativeAppService } from './shared/services/native/native-app/native-app.service';
 
 @Component({
   selector: 'app-root',
@@ -29,19 +29,28 @@ export class AppComponent {
     private navigation: NavigationService,
     private facade: AppFacade,
     private platform: Platform,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
     private theme: ThemeService,
+    private fcm: FcmService,
+    private zone: NgZone,
+    private native: NativeAppService
   ) {
     this.initApp();
   }
   async initApp() {
-    this.platform.ready().then(() => {
+    this.platform.ready().then(async () => {
+      const device = await this.native.getDeviceInfo();
+
+      this.viewState$ = this.facade.viewState$;
       this.theme.themeInit();
       this.ionLanguageService.initTranslate();
-      this.viewState$ = this.facade.viewState$;
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+
+      if (device.platform == 'web') {
+
+      }
+      if (device.platform === 'android' || device.platform === 'ios') {
+        (await this.native.initNative()).appUrlOpen;
+        await this.fcm.initListerners();
+      }
     }).catch(e => {
       throw e;
     });;
